@@ -1,7 +1,5 @@
 // FIXME: Make me pass! Diff budget: 30 lines.
 
-// I AM NOT DONE
-
 #[derive(Default)]
 struct Builder {
     string: Option<String>,
@@ -9,13 +7,35 @@ struct Builder {
 }
 
 impl Builder {
-    // fn string(...
+    fn string<T: AsRef<str>>(&mut self, string: T) -> &mut Self {
+        self.string = Option::Some(String::from(string.as_ref()));
+        self
+    }
 
-    // fn number(...
+    fn number(&mut self, number: usize) -> &mut Self {
+        self.number = Option::Some(number);
+        self
+    }
 }
 
 impl ToString for Builder {
-    // Implement the trait
+    fn to_string(&self) -> String {
+        String::from(format!(
+            "{}{}{}",
+            match &self.string {
+                Some(s) => s.clone(),
+                None => String::from(""),
+            },
+            match (&self.string, &self.number) {
+                (Some(_), Some(_)) => String::from(" "),
+                _ => String::from(""),
+            },
+            match &self.number {
+                Some(n) => n.to_string(),
+                None => String::from(""),
+            },
+        ))
+    }
 }
 
 // Do not modify this function.
